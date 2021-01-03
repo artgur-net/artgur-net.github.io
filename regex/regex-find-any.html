@@ -6,10 +6,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Artur Gurgul- Articles</title>
+  <title>Artur Gurgul- Regex: Find any</title>
   <meta name="author" content="Artur Gurgul" />
   <!-- <meta name="description" content="The blog of Artur Gurgul" />
-  <link rel="canonical" href="artgur.net/" />
+  <link rel="canonical" href="artgur.net/regex/regex-find-any.html" />
     -->
   <link href="//fonts.googleapis.com/css?family=Open+Sans:600,800" rel="stylesheet" type="text/css">
   <link rel="shortcut icon" href="/favicon.png">
@@ -94,28 +94,51 @@
     </div>
 
     <div class="eleven columns content">
-      <div id="home">
-  <h2><i class="fa fa-bookmark"></i> Articles</h2>
-  <ul id="blog-posts" class="posts">
+      <p class="meta">
+  October 19, 2020 
+  <a href="/">
+    <i class="home fa fa-home"></i>
+  </a>
+</p>
+
+<h1 class="title">Regex: Find any</h1>
+
+<div id="post">
+  <p>How to match “any character” in regular expression</p>
+
+<ul>
+  <li><code class="highlighter-rouge">.</code> =&gt; any char except newline</li>
+  <li><code class="highlighter-rouge">\.</code> =&gt; the actual dot character</li>
+  <li><code class="highlighter-rouge">.?</code> = <code class="highlighter-rouge">.{0,1}</code> = match any char except newline zero or one times</li>
+  <li><code class="highlighter-rouge">.*</code> = <code class="highlighter-rouge">.{0,}</code> = match any char except newline zero or more times</li>
+  <li><code class="highlighter-rouge">.+</code> = <code class="highlighter-rouge">.{1,}</code> = match any char except newline one or more times</li>
+</ul>
+
+</div>
+
+<!--  comments comes from github like https://api.github.com/repos/artur-gurgul/artur-gurgul.markdown/issues/1/comments -->
+
+<!-- 
+<div id="related">
+  <h3>Related Posts</h3>
+  <ul class="posts">
     
-      <li><span>22 Dec 2020 &raquo;</span><a href="/git/squash.html">Git - squasing commits</a></li>
+    <li>
+      <span>22 Dec 2020 &raquo;</span> <a href="/git/squash.html">Git - squasing commits</a>
+    </li>
     
-      <li><span>19 Oct 2020 &raquo;</span><a href="/linux/recepies/archlinux-install-media.html">[DRAFT] Install media for archlinux</a></li>
+    <li>
+      <span>19 Oct 2020 &raquo;</span> <a href="/linux/recepies/archlinux-install-media.html">[DRAFT] Install media for archlinux</a>
+    </li>
     
-      <li><span>19 Oct 2020 &raquo;</span><a href="/regex/regex-find-any.html">Regex: Find any</a></li>
-    
-      <li><span>19 Oct 2020 &raquo;</span><a href="/linux/recepies/creating-ram-disk.html">Linux - RAM disk </a></li>
-    
-      <li><span>19 Oct 2016 &raquo;</span><a href="/swift/ios-threading.html">iOS - Threading</a></li>
-    
-      <li><span>19 Oct 2016 &raquo;</span><a href="/commandline/recepies.html">Commandline recepies</a></li>
-    
-      <li><span>19 Oct 2016 &raquo;</span><a href="/golang/bridging.html">Golang bridging</a></li>
-    
-      <li><span>19 Oct 2016 &raquo;</span><a href="/linux/recepies/power-management.html">Ubuntu - Power management</a></li>
+    <li>
+      <span>19 Oct 2020 &raquo;</span> <a href="/linux/recepies/creating-ram-disk.html">Linux - RAM disk </a>
+    </li>
     
   </ul>
+
 </div>
+-->
         
     <ul class="tag_list_in_post"></ul>
 
