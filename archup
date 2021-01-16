@@ -1,27 +1,17 @@
 #!/usr/bin/env zsh
 
-# install script: After boot from USB stick
-# mount /dev/sdb4 /root
-# cd
-# zsh baseinstall.zsh
+# sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-function ask {
-    return
-    echo "Do you want to continye? (yes/no)" 
-    while IFS= read -r line; do
-       case $line in
-       "y" | "yes")
-            break
-	    ;;
-	"n" | "no")
-	    exit 0
-	    ;;
-	esac
-     done 
-}
 
-echo 
-echo List of disks attached to the system
+# Create install media from Mac OS
+# diskutil list
+# diskutil unmount /dev/disk2s1
+# sudo dd if=archlinux-2021.01.01-x86_64.iso of=/dev/disk2
+# diskutil eject /dev/disk2
+
+
+pacman -Sy
+pacman -S dialog --noconfirm
 
 lsblk
 
