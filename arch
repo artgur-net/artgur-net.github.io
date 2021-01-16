@@ -1,0 +1,174 @@
+#!/usr/bin/env zsh
+
+# install script: After boot from USB stick
+# mount /dev/sdb4 /root
+# cd
+# zsh baseinstall.zsh
+
+function ask {
+    return
+    echo "Do you want to continye? (yes/no)" 
+    while IFS= read -r line; do
+       case $line in
+       "y" | "yes")
+            break
+	    ;;
+	"n" | "no")
+	    exit 0
+	    ;;
+	esac
+     done 
+}
+
+echo 
+echo List of disks attached to the system
+
+lsblk
+
+echo Script will install system on Disk /dev/sda 
+
+ask
+
+echo installing
+
+# use this command for manual disk managing
+#   cfdisk /dev/sda
+
+# informations about disk
+#   fdisk -l /dev/sda
+
+# list all partitions on all disks
+#   parted -l
+
+#parted -s /dev/sda mklabel GPT
+parted -s /dev/sda mktable GPT
+
+# Lit all types of partitions
+#     sfdisk -T
+
+# 300MB UEFI, 16GB swap, Rest
+# <start> <size> <id> <bootable> <c,h,s> <c,h,s>
+# sfdisk /dev/sda << EOF
+# ,300,ef
+# ,16000,S,h
+# ;
+#EOF
+
+# Alternative way
+# echo ',,c;' | sfdisk /dev/sdd
+#
+
+
+
+# Using fdisk
+# List all file systems
+# fdisk /dev/sda and the hit l and enter
+#
+
+
+fdisk /dev/sda << FDISK_CMDS
+g
+n
+1
+
++300MiB
+t
+1
+n
+2
+
++16GiB
+t
+2
+19
+n
+3
+
+
+t
+3
+20
+w
+FDISK_CMDS
+
+
+
+mkfs.fat -F32 /dev/sda1
+mkfs.ext4 /dev/sda3
+mkswap /dev/sda2
+
+
+mount /dev/sda3 /mnt
+swapon /dev/sda2
+
+
+pacstrap /mnt base base-devel linux linux-firmware nano vim
+genfstab -U -p /mnt >> /mnt/etc/fstab
+
+
+
+arch-chroot /mnt << CHROOT
+
+echo "arch" > /etc/hostname
+sed -i "s/#en_US/en_US/g" /etc/locale.gen
+locale-gen
+
+echo LANG=en_US.UTF-8 > /etc/locale.conf
+export LANG=en_US.UTF-8
+ln -s /usr/share/zoneinfo/Europe/Warsaw /etc/localtime
+
+hwclock --systohc --utc
+
+
+# in order to run 32bit app open /etc/pacman.conf
+# and uncoment [multilib] section
+
+pacman -Syu
+
+pacman -S zsh --noconfirm
+
+passwd
+useradd -mg users -G wheel,storage,power -s /usr/bin/zsh artur
+passwd artur
+chage -d 0 artur
+
+# command visudo opens config file for sudories
+
+cat >> /etc/sudoers <<EOL
+
+%wheel ALL=(ALL) NOPASSWD: ALL
+
+EOL
+
+
+pacman -S grub efibootmgr dosfstools os-prober mtools --noconfirm
+mkdir /boot/EFI
+mount /dev/sda1 /boot/EFI
+grub-install --target=x86_64-efi  --bootloader-id=grub_uefi --recheck
+
+grub-mkconfig -o /boot/grub/grub.cfg
+
+pacman -S dhcpcd --noconfirm
+
+exit
+
+
+CHROOT
+
+umount -a
+
+
+
+# More steps
+# $ sudo systemctl start dhcpcd
+# $ sudo systemctl enable dhcpcd
+# # ip a
+# # ping -c2 google.com
+#
+#  To check interfaces
+#   ip link
+#  and then 
+#   dhcpcd enp3s0f0
+#  I installeg gnome-twaeks and set 1.5 scale and the os looks good
+#
+#  systemctl start dhcpcd
